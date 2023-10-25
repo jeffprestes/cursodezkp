@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@eyblockchain/starlight": "^1.4.0"
+  }
+}
