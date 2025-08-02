@@ -26,12 +26,21 @@ cd exemplo-multiplicador
 circom multiplicador.circom --r1cs --wasm --sym
 
 snarkjs groth16 setup multiplicador.r1cs ../powersOfTau28_hez_final_15.ptau multiplicador_00.zkey
-snarkjs zkey contribute multiplicador_00.zkey multiplicador_01.zkey --name="1a contribuicao"
+xsnarkjs zkey contribute multiplicador_00.zkey multiplicador_01.zkey --name="1a contribuicao"
+
+snarkjs plonk setup multiplicador.r1cs ../powersOfTau28_hez_final_15.ptau multiplicador_00.zkey
+
 snarkjs zkey export verificationkey multiplicador_01.zkey chave-verificacao.json
 
 node multiplicador_js/generate_witness.js multiplicador_js/multiplicador.wasm valores-entrada.json testemunha.wtns
+
 snarkjs groth16 prove multiplicador_01.zkey testemunha.wtns prova.json valores-entrada-publica.json
-snarkjs groth16 verify chave-verificacao.json valores-entrada-publica.json prova.json 
+
+snarkjs plonk prove multiplicador_00.zkey testemunha.wtns prova.json valores-entrada-publica.json
+
+snarkjs groth16 verify chave-verificacao.json valores-entrada-publica.json prova.json
+
+snarkjs plonk verify chave-verificacao.json valores-entrada-publica.json prova.json 
 
 snarkjs zkey export solidityverifier multiplicador_01.zkey verificador.sol
 snarkjs zkey export soliditycalldata valores-entrada-publica.json prova.json > valores-entrada-solidity.txt
