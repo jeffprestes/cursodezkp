@@ -4,7 +4,7 @@ template Multiplicador() {
   signal input a;
   signal input b;
   signal input c;
-  signal output deltaBier;  
+  signal input deltaBier;  
  
   /*
   circom allows programmers to define the constraints that define the arithmetic circuit. 
@@ -15,7 +15,7 @@ template Multiplicador() {
     - Applications of commutativity of addition.
     - Multiplication (or division) by constants.
   */
-  deltaBier <== b**2-(4*a-c);
+  deltaBier === b**2-(4*a-c);
 }
 
-component main = Multiplicador();
+component main {public [deltaBier]} = Multiplicador();
